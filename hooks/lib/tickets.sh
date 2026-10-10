@@ -36,7 +36,12 @@ ticket_branch_r() {
         slug="${slug:0:40}"
         [[ "$slug" == *-* ]] && slug="${slug%-*}"
     fi
+    # Assurer qu'il n'y a pas de mots vides finaux (dernier caractère un tiret)
     REPLY="$type/$n${slug:+-$slug}"
+    # Corriger les branches qui finissent par un tiret
+    if [[ "$REPLY" == *- ]]; then
+        REPLY="${REPLY%-}"
+    fi
 }
 
 # REPLY = type de branche d'après les étiquettes d'un ticket (une par ligne) :
